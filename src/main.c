@@ -8,5 +8,13 @@ int main()
     printf("Old String: %s\n", oldstr);
     printf("New String: %s\n", newstr);
 
+    char *deletedstr = DeleteSubstr(oldstr, "are");
+    printf("Deleted String: %s\n", deletedstr);
+
+    char spaces[] = "a   b   c   d";
+    RemoveConsecutiveSpaces(spaces);
+    printf("No Consec Space: %s\n", spaces);
+
+    free(newstr);
     return 0;
 }
