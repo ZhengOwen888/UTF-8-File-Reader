@@ -5,6 +5,44 @@
 #include <string.h>
 #include <stdbool.h>
 
+char *ToUpper(char *src)
+{
+    char *temp_src = src;
+
+    if (src == NULL)
+    {
+        perror("ToUpper failed to uppercase NULL");
+        exit(1);
+    }
+
+    while ((*temp_src) != '\0')
+    {
+        *temp_src = toupper((unsigned char)(*temp_src));
+        temp_src++;
+    }
+
+    return src;
+}
+
+char *ToLower(char *src)
+{
+    char *temp_src = src;
+
+    if (src == NULL)
+    {
+        perror("ToLower failed to lowercase NULL");
+        exit(1);
+    }
+
+    while ((*temp_src) != '\0')
+    {
+        *temp_src = tolower((unsigned char)(*temp_src));
+        temp_src++;
+    }
+
+    return src;
+}
+
 const char** FindAllOccurrence(const char *text, const char *substr, int *count_occurrence)
 {
     if (!text || !substr || !count_occurrence)
@@ -176,4 +214,40 @@ int CharacterCount(const char* src)
     }
 
     return strlen(src);
+}
+
+Map *WordFreq(const char *src)
+{
+    const char *delimeters = " .,;:'\"(){}[]!@#$%^&*=-_~<>?\\/\t\n";
+    int delimeter_count = strlen(delimeters);
+
+    char *temp_src = malloc(sizeof(char) * (strlen(src) + 1));
+    if (temp_src == NULL)
+    {
+        perror("Calloc failed to allocate for WordFreq Temp String.");
+        exit(1);
+    }
+    strcpy(temp_src, src);
+
+    char *words = strtok(temp_src, delimeters);
+    Map *word_freq = CreateMap();
+
+    while (words != NULL)
+    {
+        MapEntry *entry = FindMapEntry(word_freq, words);
+
+        if (entry != NULL)
+        {
+            entry->value_++;
+        }
+        else
+        {
+            InsertMapEntry(&word_freq, ToLower(words), 1);
+        }
+
+        words = strtok(NULL, delimeters);
+    }
+
+    free(temp_src);
+    return word_freq;
 }

@@ -1,3 +1,6 @@
+#ifndef STRING_MAP_HPP
+#define STRING_MAP_HPP
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -39,3 +42,7 @@ void DeleteMapEntry(Map **map, char *key);
 MapEntry *FindMapEntry(const Map *map,  char *key);
 
 Map *RehashMap(Map *map, size_t new_capacity);
+
+void DisplayMap(Map *map);
+
+#endif

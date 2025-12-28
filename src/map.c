@@ -177,3 +177,16 @@ Map *RehashMap(Map *map, size_t new_capacity)
     FreeMap(map);
     return new_map;
 }
+
+void DisplayMap(Map *map)
+{
+    for (size_t bucket = 0; bucket < map->capacity_; bucket++)
+    {
+        MapEntry *entry = &(map->entries_[bucket]);
+
+        if (entry->state_ == ENTRY_OCCUPIED)
+        {
+            printf("Key: %10s | Value: %d\n", entry->key_, entry->value_);
+        }
+    }
+}
