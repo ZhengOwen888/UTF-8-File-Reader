@@ -1,4 +1,5 @@
 #include "str_helpers.h"
+#include "map.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -6,6 +7,11 @@
 
 const char** FindAllOccurrence(const char *text, const char *substr, int *count_occurrence)
 {
+    if (!text || !substr || !count_occurrence)
+    {
+        return NULL;
+    }
+
     int text_len = strlen(text);
     int substr_len = strlen(substr);
 
@@ -30,6 +36,11 @@ const char** FindAllOccurrence(const char *text, const char *substr, int *count_
 
 char* ReplaceSubstr(const char *src, const char *old_substr, const char *new_substr)
 {
+    if (!src || !old_substr || !new_substr)
+    {
+        return NULL;
+    }
+
     int count_occurrence = 0;
     const char **all_occurrences = FindAllOccurrence(src, old_substr, &count_occurrence);
     if (all_occurrences == NULL)
@@ -76,6 +87,11 @@ char* ReplaceSubstr(const char *src, const char *old_substr, const char *new_sub
 
 char* DeleteSubstr(const char *src, const char *substr)
 {
+    if (!src || !substr)
+    {
+        return NULL;
+    }
+
     return ReplaceSubstr(src, substr, "");
 }
 
@@ -102,4 +118,62 @@ void RemoveConsecutiveSpaces(char *src)
     }
 
    *write = '\0';
+}
+
+bool IsDelimeter(const char* delimeters, int delimeter_count, char character)
+{
+    for (int i = 0; i < delimeter_count; i++)
+    {
+        if (character == delimeters[i])
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int WordCount(const char* src)
+{
+    if (!src)
+    {
+        return 0;
+    }
+
+    const char *delimeters = " .,;:'\"(){}[]!@#$%^&*=-_~<>?\\/\t\n";
+    int delimeter_count = strlen(delimeters);
+
+    int word_count = 0;
+    int str_len = strlen(src);
+    int i = 0;
+
+    while (i < str_len)
+    {
+        if (!IsDelimeter(delimeters, delimeter_count, src[i]))
+        {
+            word_count++;
+        }
+
+        while (i < str_len && !IsDelimeter(delimeters, delimeter_count, src[i]))
+        {
+            i++;
+        }
+
+        while (i < str_len && IsDelimeter(delimeters, delimeter_count, src[i]))
+        {
+            i++;
+        }
+    }
+
+    return word_count;
+}
+
+int CharacterCount(const char* src)
+{
+    if (!src)
+    {
+        return 0;
+    }
+
+    return strlen(src);
 }
